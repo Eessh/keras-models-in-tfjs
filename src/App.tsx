@@ -9,8 +9,12 @@ function App() {
   useEffect(() => {
     loadModels();
     loadVideoStream();
-    const interval = setInterval(() => {runModel()}, 100);
-    return() => clearInterval(interval);
+    const interval = setInterval(() => {
+      runModel()
+    }, 100);
+    return() => {
+      clearInterval(interval)
+    };
   }, []);
   
   const loadModels = async () => {
