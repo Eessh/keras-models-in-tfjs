@@ -6,5 +6,8 @@ Used these docs to convert the keras models(.h5 format) to tensorflow.js compati
 ### Progress
 - Converted model without any issues.
 - Model is loaded in browser.
-- Unable to use the model properly, currently facing this issue:
-![Error Screenshot](error_screenshot.png)
+- Unable to use the model properly: 
+  - Resolved last error, by resizing the tf image, and converting it into 4D tensor
+  ![Last Error](./screenshots/previous_error.png)
+  - Currently facing this error:
+  ![Error Screenshot](./screenshots/current_error.png)

@@ -11,7 +11,7 @@ function App() {
     loadVideoStream();
     const interval = setInterval(() => {
       runModel()
-    }, 100);
+    }, 5000);
     return() => {
       clearInterval(interval)
     };
@@ -41,10 +41,13 @@ function App() {
   
   const runModel = () => {
     if (videoRef!==null && videoRef.current!==null && model!==null) {
-      const tensor = tf.browser.fromPixels(videoRef.current);
-      model.predict(tensor);
+      const tfImg = tf.browser.fromPixels(videoRef.current);
+      const smallImg = tf.image.resizeBilinear(tfImg, [416, 416]);
+      // const resized = tf.cast(smallImg, "float32");
+      const t4d = tf.tensor4d(Array.from(smallImg.dataSync()), [1, 416, 416, 3]);
+      model.predict(t4d, {batchSize: 1});
     }
-  };
+  }
 
   return (
     <div className="App">
