@@ -12,3 +12,4 @@ Used these docs to convert the keras models(.h5 format) to tensorflow.js compati
   - Currently facing this error:
   ![Error Screenshot](./screenshots/current_error.png)
 - Resolved these errors, getting some output (output is a tensor, don't know what info can we get from it)
+![Output](./screenshots/output.png)
