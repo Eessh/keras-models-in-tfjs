@@ -61,7 +61,47 @@ function App() {
       const output = model.predict(expanded, {batchSize: 64, verbose: true});
       console.log("Log: Output: ", output)
     }
-  }
+  };
+  
+  const processOutput = (
+    output: tf.Tensor<tf.Rank> | tf.Tensor<tf.Rank>[],
+    frameWidth: number,
+    frameHeight: number
+  ) => {
+    const anchors = [0.57273, 0.677385, 1.87446, 2.06253, 3.33843, 5.47434, 7.88282, 3.52778, 9.77052, 9.16828];
+    let netout = output;
+    const nb_class = 1;
+    const obj_threshold = 0.4;
+    const nms_threshold = 0.3;
+    const grid_h = netout.shape[0];
+    const grid_w = netout.shape[1];
+    let nb_box = netout.shape[2];
+    
+    const size = 4 + nb_class + 1;
+    nb_box = 5;
+    
+    netout = netout.reshape(grid_h,grid_w,nb_box,size)
+    
+    const boxes = [];
+    
+    // decode the output by the network
+    // netout[..., 4]  = _sigmoid(netout[..., 4])
+    // netout[..., 5:] = netout[..., 4][..., np.newaxis] * _softmax(netout[..., 5:])
+    // netout[..., 5:] *= netout[..., 5:] > obj_threshold
+  };
+  
+  const _sigmoid = (x) => {
+    x.forEach((num) => num = Math.exp(num));
+    return 1. / (1. + Math.exp(-x));
+  };
+  
+  const _softmax = (x: number, axis=-1, t=-100.) => {
+    x = x - Math.max(x);
+    if Math.min(x) < t:
+      x = x/np.min(x)*t
+    e_x = np.exp(x)
+    return e_x / e_x.sum(axis, keepdims=True)
+  };
   
   const runMobilenetModel = () => {
     if (videoRef!==null && videoRef.current!==null && videoRef.current!==undefined && model!==null) {
