@@ -68,8 +68,9 @@ const rgbToGrayscale = async (imgTensor: tf.Tensor<tf.Rank>) => {
   return grayscale.expandDims(2)
 };
 
+const Emotions = ["Angry" ,"Disgust","Scared", "Happy", "Sad", "Surprised", "Neutral"];
+
 const getMaxEmotion = (arr: number[]): string => {
-  const emotions = ["angry" ,"disgust","scared", "happy", "sad", "surprised", "neutral"]
   let maxValue = Number.NEGATIVE_INFINITY, index = 0;
   for (let i = 0; i < 7; i++) {
     if (arr[i] > maxValue) {
@@ -77,7 +78,7 @@ const getMaxEmotion = (arr: number[]): string => {
       maxValue = arr[i];
     }
   }
-  return emotions[index];
+  return Emotions[index];
 };
 
 export {
@@ -88,5 +89,6 @@ export {
   isTensor4D,
   extractFaceTensor,
   rgbToGrayscale,
+  Emotions,
   getMaxEmotion
 };

@@ -1,17 +1,22 @@
 import { useEffect, useRef } from "react";
 import * as tf from "@tensorflow/tfjs";
 import * as blazeface from "@tensorflow-models/blazeface";
+import { useGlobalContext } from "../../GlobalContext";
 import {
   isTensor1D,
   extractFaceTensor,
   rgbToGrayscale,
-  getMaxEmotion
-} from "./utils";
+  getMaxEmotion,
+  Rect
+} from "../../utils";
+import "./MobileNetV2.css";
 
 const MobileNetV2 = () => {
   let blazefaceModel: blazeface.BlazeFaceModel | null = null;
   let mobileNetV2Model: tf.LayersModel | null = null;
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const { setVideoLoaded, setPrediction } = useGlobalContext();
 
   useEffect(() => {
     const interval = setInterval(() => {makePredictions()}, 200);
@@ -46,11 +51,26 @@ const MobileNetV2 = () => {
     })
     .then((videoStream) => {
       videoRef.current!.srcObject = videoStream;
+      setVideoLoaded(true);
       console.log("Log: VideoStream obtained :)");
     })
     .catch((err) => {
       console.log("Log: Error while accessing VideoStream: ", err);
     });
+  };
+
+  const drawPredictions = (boundingRect: Rect) => {
+    if (canvasRef === null) {
+      return;
+    }
+    const context = canvasRef.current?.getContext("2d");
+    if (context===undefined || context===null) {
+      return;
+    }
+    context.clearRect(0, 0, 640, 360);
+    const { x, y, width, height } = boundingRect;
+    context.strokeStyle = "green";
+    context.strokeRect(x, y, width, height);
   };
 
   const makePredictions = async () => {
@@ -69,23 +89,32 @@ const MobileNetV2 = () => {
         width: bottomRight[0] - topLeft[0],
         height: bottomRight[1] - topLeft[1]
       };
+      drawPredictions(boundingRect);
       const faceTensor = await extractFaceTensor(imageTensor, boundingRect);
       const grayscaledFaceTensor = await rgbToGrayscale(faceTensor);
       const resizedFaceTensor = grayscaledFaceTensor.resizeBilinear([48, 48]).mean(2).toFloat().expandDims(0).expandDims(-1);
       const output = mobileNetV2Model.predict(resizedFaceTensor);
+      setPrediction(output.arraySync()[0]);
       console.log("Log: Predicted Emotion: ", getMaxEmotion(await output.arraySync()[0]));
     }
   };
 
   return (
-    <video
-      ref={videoRef}
-      width={640}
-      height={720}
-      autoPlay
-      muted
-      playsInline
-    ></video>
+    <div className="MobilneNetV2">
+      <canvas
+        ref={canvasRef}
+        width={640}
+        height={360}
+      ></canvas>
+      <video
+        ref={videoRef}
+        width={640}
+        height={360}
+        autoPlay
+        muted
+        playsInline
+      ></video>
+    </div>
   );
 };
 
