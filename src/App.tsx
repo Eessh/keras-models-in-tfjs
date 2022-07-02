@@ -156,8 +156,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {/* <MiniXception /> */}
-        <TinyXception />
+        <MiniXception />
+        {/* <TinyXception /> */}
       </header>
     </div>
   )
