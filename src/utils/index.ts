@@ -18,28 +18,28 @@ const floorRect = (rect: Rect): Rect => {
 };
 
 function isTensor(tensor: any, dim: number) {
-  return tensor instanceof tf.Tensor && tensor.shape.length === dim
+  return tensor instanceof tf.Tensor && tensor.shape.length === dim;
 }
 
 function isTensor1D(tensor: any): tensor is tf.Tensor3D {
-  return isTensor(tensor, 1)
+  return isTensor(tensor, 1);
 }
 
 function isTensor3D(tensor: any): tensor is tf.Tensor3D {
-  return isTensor(tensor, 3)
+  return isTensor(tensor, 3);
 }
 
 function isTensor4D(tensor: any): tensor is tf.Tensor4D {
-  return isTensor(tensor, 4)
+  return isTensor(tensor, 4);
 }
 
 const extractFaceTensor = async (imageTensor: tf.Tensor3D | tf.Tensor4D, detection: Rect): Promise<tf.Tensor3D> => {
   if (!isTensor3D(imageTensor) && !isTensor4D(imageTensor)) {
-    throw new Error('extractFaceTensors - expected image tensor to be 3D or 4D')
+    throw new Error('extractFaceTensors - expected image tensor to be 3D or 4D');
   }
 
   if (isTensor4D(imageTensor) && imageTensor.shape[0] > 1) {
-    throw new Error('extractFaceTensors - batchSize > 1 not supported')
+    throw new Error('extractFaceTensors - batchSize > 1 not supported');
   }
 
   return tf.tidy(() => {
@@ -52,21 +52,23 @@ const extractFaceTensor = async (imageTensor: tf.Tensor3D | tf.Tensor4D, detecti
 };
 
 const rgbToGrayscale = async (imgTensor: tf.Tensor<tf.Rank>) => {
-  const minTensor = imgTensor.min()
-  const maxTensor = imgTensor.max()
-  const min = (await minTensor.data())[0]
-  const max = (await maxTensor.data())[0]
-  minTensor.dispose()
-  maxTensor.dispose()
+  const minTensor = imgTensor.min();
+  const maxTensor = imgTensor.max();
+  const min = (await minTensor.data())[0];
+  const max = (await maxTensor.data())[0];
+  minTensor.dispose();
+  maxTensor.dispose();
 
-  // Normalize to [0, 1]
-  const normalized = imgTensor.sub(tf.scalar(min)).div(tf.scalar(max - min))
+  return tf.tidy(() => {
+    // Normalize to [0, 1]
+    const normalized = imgTensor.sub(tf.scalar(min)).div(tf.scalar(max - min));
 
-  // Compute mean of R, G, and B values
-  let grayscale = normalized.mean(2)
+    // Compute mean of R, G, and B values
+    let grayscale = normalized.mean(2);
 
-  // Expand dimensions to get proper shape: (h, w, 1)
-  return grayscale.expandDims(2)
+    // Expand dimensions to get proper shape: (h, w, 1)
+    return grayscale.expandDims(2);
+  });
 };
 
 const Emotions = ["Angry", "Disgust", "Scared", "Happy", "Sad", "Surprised", "Neutral"];

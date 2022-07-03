@@ -1,0 +1,34 @@
+.HeaderBar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo, .description {
+  margin-top: 1rem;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+
+.logo {
+  margin-left: 1rem;
+  cursor: pointer;
+}
+
+.description {
+  font-size: 1.4rem;
+  color: #3c3f44;
+  margin-right: 2rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.desc--icon {
+  margin-left: 1rem;
+  cursor: pointer;
+}

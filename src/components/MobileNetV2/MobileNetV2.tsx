@@ -17,8 +17,6 @@ const MobileNetV2 = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const {
-    blazefaceLoaded,
-    mobileNetV2Loaded,
     setBlazefaceLoaded,
     setMobileNetV2Loaded,
     setVideoLoaded,
@@ -32,6 +30,10 @@ const MobileNetV2 = () => {
   useEffect(() => {
     loadBlazeface();
     loadMobileNetV2();
+
+    return () => {
+      mobileNetV2Model?.layers.forEach(layer => layer.dispose());
+    };
   }, []);
   useEffect(() => {loadVideoStream()}, []);
 
