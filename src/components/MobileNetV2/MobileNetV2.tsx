@@ -16,7 +16,14 @@ const MobileNetV2 = () => {
   let mobileNetV2Model: tf.LayersModel | null = null;
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const { setVideoLoaded, setPrediction } = useGlobalContext();
+  const {
+    blazefaceLoaded,
+    mobileNetV2Loaded,
+    setBlazefaceLoaded,
+    setMobileNetV2Loaded,
+    setVideoLoaded,
+    setPrediction
+  } = useGlobalContext();
 
   useEffect(() => {
     const interval = setInterval(() => {makePredictions()}, 200);
@@ -29,20 +36,20 @@ const MobileNetV2 = () => {
   useEffect(() => {loadVideoStream()}, []);
 
   const loadBlazeface = async () => {
-    const model = await blazeface.load();
-    if (model !== null) {
+    blazeface.load().then((model) => {
       blazefaceModel = model;
-      console.log("Log: Loaded Blazeface model.");
-    }
+      setBlazefaceLoaded(true);
+      console.log("Log: Blazeface model loaded");
+    });
   };
 
   const loadMobileNetV2 = async () => {
-    const model = await tf.loadLayersModel("/converted_models/FaceExpression-MUL_KSIZE_MobileNet_v2_best/model.json");
-    if (model !== null) {
+    tf.loadLayersModel("/converted_models/FaceExpression-MUL_KSIZE_MobileNet_v2_best/model.json").then((model) => {
       mobileNetV2Model = model;
-      console.log("Log: Loaded TinyXception model.");
-    }
-  }
+      setMobileNetV2Loaded(true);
+      console.log("Log: MobileNetV2 model loaded");
+    });
+  };
 
   const loadVideoStream = () => {
     navigator.mediaDevices.getUserMedia({
@@ -67,9 +74,9 @@ const MobileNetV2 = () => {
     if (context===undefined || context===null) {
       return;
     }
-    context.clearRect(0, 0, 640, 360);
+    context.clearRect(0, 0, 640, 480);
     const { x, y, width, height } = boundingRect;
-    context.strokeStyle = "green";
+    context.strokeStyle = "aqua";
     context.strokeRect(x, y, width, height);
   };
 
@@ -81,11 +88,14 @@ const MobileNetV2 = () => {
     const imageTensor = tf.browser.fromPixels(videoRef.current);
     const returnTensors = false;
     const facePrediction = (await blazefaceModel.estimateFaces(imageTensor, returnTensors))[0];
+    if (facePrediction === undefined) {
+      return;
+    }
     const { topLeft, bottomRight } = facePrediction;
     if (!isTensor1D(topLeft) && !isTensor1D(bottomRight)) {
       const boundingRect: Rect = {
-        x: topLeft[1],
-        y: topLeft[0],
+        x: topLeft[0],
+        y: topLeft[1],
         width: bottomRight[0] - topLeft[0],
         height: bottomRight[1] - topLeft[1]
       };
@@ -104,12 +114,12 @@ const MobileNetV2 = () => {
       <canvas
         ref={canvasRef}
         width={640}
-        height={360}
+        height={480}
       ></canvas>
       <video
         ref={videoRef}
         width={640}
-        height={360}
+        height={480}
         autoPlay
         muted
         playsInline

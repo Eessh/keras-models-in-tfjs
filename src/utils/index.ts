@@ -1,4 +1,5 @@
 import * as tf from "@tensorflow/tfjs";
+import { TPrediction } from "../GlobalContext";
 
 export type Rect = {
   x: number,
@@ -68,7 +69,7 @@ const rgbToGrayscale = async (imgTensor: tf.Tensor<tf.Rank>) => {
   return grayscale.expandDims(2)
 };
 
-const Emotions = ["Angry" ,"Disgust","Scared", "Happy", "Sad", "Surprised", "Neutral"];
+const Emotions = ["Angry", "Disgust", "Scared", "Happy", "Sad", "Surprised", "Neutral"];
 
 const getMaxEmotion = (arr: number[]): string => {
   let maxValue = Number.NEGATIVE_INFINITY, index = 0;
@@ -81,6 +82,20 @@ const getMaxEmotion = (arr: number[]): string => {
   return Emotions[index];
 };
 
+const EmojiMap = new Map<string, string>([
+  ["Angry", "😠"],
+  ["Disgust", "🤮"],
+  ["Scared", "😬"],
+  ["Happy", "😄"],
+  ["Sad", "😥"],
+  ["Surprised", "😧"],
+  ["Neutral", "😐"],
+]);
+
+const getEmojiForPrediction = (prediction: TPrediction): string => {
+  return EmojiMap.get(getMaxEmotion(prediction))!;
+};
+
 export {
   floorRect,
   isTensor,
@@ -90,5 +105,6 @@ export {
   extractFaceTensor,
   rgbToGrayscale,
   Emotions,
-  getMaxEmotion
+  getMaxEmotion,
+  getEmojiForPrediction
 };

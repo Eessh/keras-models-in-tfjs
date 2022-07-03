@@ -1,6 +1,6 @@
 import { GlobalContextProvider } from "./GlobalContext";
-import RealtimeEmotionChart from "./components/RealtimeEmotionChart";
 import MobileNetV2 from "./components/MobileNetV2";
+import EmotionEmoji from "./components/EmotionEmoji";
 import './App.css';
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
             <MobileNetV2 />
           </div>
           <div className="right">
-            <RealtimeEmotionChart />
+            <EmotionEmoji />
           </div>
         </GlobalContextProvider>
       </header>

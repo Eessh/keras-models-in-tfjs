@@ -13,7 +13,7 @@
   color: white;
 }
 
-.lfet, .right {
+.left, .right {
   position: relative;
   flex: 1;
   height: 100%;
