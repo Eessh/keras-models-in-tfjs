@@ -108,6 +108,13 @@ const MobileNetV2 = () => {
       const output = mobileNetV2Model.predict(resizedFaceTensor);
       setPrediction(output.arraySync()[0]);
       console.log("Log: Predicted Emotion: ", getMaxEmotion(await output.arraySync()[0]));
+      
+      // Memory Leak Issue solved: disposing all tensors after they are no longer needed
+      imageTensor.dispose();
+      faceTensor.dispose();
+      grayscaledFaceTensor.dispose();
+      resizedFaceTensor.dispose();
+      tf.dispose(output);
     }
   };
 
