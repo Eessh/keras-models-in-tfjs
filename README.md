@@ -1,5 +1,7 @@
 # Keras models in Tensorflow.js
 
+![Working Demo](./screenshots/demo.jpeg)
+
 This web app uses a model made in python(using [Keras](https://keras.io/)), in the browser with [TensorflowJS](https://tensorflow.org/js/).
 The model is converted from Keras(.h5 or .hdf5) to TensorflowJS compatible with the help of this tool: [TensorflowJS Converter](https://www.tensorflow.org/js/tutorials/conversion/import_keras).
 
