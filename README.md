@@ -12,8 +12,8 @@ Converted model is [here](https://github.com/Eessh/keras-models-in-tfjs/tree/mas
 
 ```mermaid
 flowchart TD
-  A[Load Video] --> B[Load Blazeface (TensorflowJS model, for face detection)];
-  B --> C[Load MobileNetV2 (for face expression classification)];
+  A[Load Video] --> B[Load Blazeface, TensorflowJS model, for face detection];
+  B --> C[Load MobileNetV2, for face expression classification];
   C --> D[Detect face, return bounding rectangle]
   D --> |Bounding Rectangle| --> E[Draw face detection on canvas, using the bounding rectangle]
   E --> F[Extract face tensor from video, using the bounding rectangle, return face tensor]
