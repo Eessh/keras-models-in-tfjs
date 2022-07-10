@@ -60,7 +60,6 @@ const MobileNetV2 = () => {
     })
     .then((videoStream) => {
       videoRef.current!.srcObject = videoStream;
-      setVideoLoaded(true);
       console.log("Log: VideoStream obtained :)");
     })
     .catch((err) => {
@@ -106,9 +105,9 @@ const MobileNetV2 = () => {
       const faceTensor = await extractFaceTensor(imageTensor, boundingRect);
       const grayscaledFaceTensor = await rgbToGrayscale(faceTensor);
       const resizedFaceTensor = grayscaledFaceTensor.resizeBilinear([48, 48]).mean(2).toFloat().expandDims(0).expandDims(-1);
-      const output = mobileNetV2Model.predict(resizedFaceTensor);
-      setPrediction(output.arraySync()[0]);
-      console.log("Log: Predicted Emotion: ", getMaxEmotion(await output.arraySync()[0]));
+      const output = (mobileNetV2Model.predict(resizedFaceTensor) as tf.Tensor);
+      setPrediction((output.arraySync() as number[][])[0]);
+      console.log("Log: Predicted Emotion: ", getMaxEmotion((output.arraySync() as number[][])[0]));
       
       // Memory Leak Issue solved: disposing all tensors after they are no longer needed
       imageTensor.dispose();
@@ -130,6 +129,10 @@ const MobileNetV2 = () => {
         ref={videoRef}
         width={640}
         height={480}
+        onLoadedData={() => {
+          setVideoLoaded(true);
+          console.log("Log: Video loaded.");
+        }}
         autoPlay
         muted
         playsInline

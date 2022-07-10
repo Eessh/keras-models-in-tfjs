@@ -21,7 +21,7 @@ function isTensor(tensor: any, dim: number) {
   return tensor instanceof tf.Tensor && tensor.shape.length === dim;
 }
 
-function isTensor1D(tensor: any): tensor is tf.Tensor3D {
+function isTensor1D(tensor: any): tensor is tf.Tensor1D {
   return isTensor(tensor, 1);
 }
 
