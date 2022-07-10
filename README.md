@@ -1,4 +1,11 @@
-# Keras models in Tensorflow.js
+<h1 align="center">
+    <img src="./src/favicon.svg" valign="middle" width="180" height="180" alt="logo" />
+    <a href="https://keras-models-in-tfjs.netlify.app">
+        <span valign="middle">
+                Keras models in TensorflowJS
+        </span>
+    </a>
+</h1>
 
 ![Working Demo](./screenshots/demo.jpeg)
 
