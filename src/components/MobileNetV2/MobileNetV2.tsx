@@ -91,6 +91,7 @@ const MobileNetV2 = () => {
     const returnTensors = false;
     const facePrediction = (await blazefaceModel.estimateFaces(imageTensor, returnTensors))[0];
     if (facePrediction === undefined) {
+      imageTensor.dispose();
       return;
     }
     const { topLeft, bottomRight } = facePrediction;
@@ -141,6 +142,8 @@ export default MobileNetV2;
 
 
 
+
+// This maybe be useful, so left this untouched 🙃
 // const doIt = async () => {
   //   if (videoRef!==null && videoRef.current!==null && blazefaceModel!==null && model!==null) {
   //     const returnTensors = false;
