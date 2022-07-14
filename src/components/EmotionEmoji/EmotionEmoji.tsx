@@ -1,5 +1,5 @@
 import { useGlobalContext } from "../../GlobalContext";
-import { getEmojiForPrediction } from "../../utils";
+import { getEmojiForPrediction, getEmojiForFaceapiPrediction } from "../../utils";
 import "./EmotionEmoji.css";
 
 const EmotionEmoji = () => {
@@ -7,8 +7,10 @@ const EmotionEmoji = () => {
   const {
     blazefaceLoaded,
     mobileNetV2Loaded,
+    faceapiModelsLoaded,
     videoLoaded,
-    prediction
+    prediction,
+    faceapiEmotion,
   } = useGlobalContext();
 
   return (
@@ -17,6 +19,11 @@ const EmotionEmoji = () => {
         {getEmojiForPrediction(prediction)}
       </p>
     : <>Loading Models ...</>
+    // faceapiModelsLoaded && videoLoaded
+    // ? <p className="EmotionEmoji">
+    //     {getEmojiForFaceapiPrediction(faceapiEmotion)}
+    //   </p>
+    // : <>Loading Models ...</>
   );
 
 };

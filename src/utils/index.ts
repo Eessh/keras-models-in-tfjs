@@ -98,6 +98,14 @@ const getEmojiForPrediction = (prediction: TPrediction): string => {
   return EmojiMap.get(getMaxEmotion(prediction))!;
 };
 
+const capitalize = (input: string): string => {
+  return input[0].toUpperCase() + input.slice(1);
+};
+
+const getEmojiForFaceapiPrediction = (emotion: string): string => {
+  return EmojiMap.get(capitalize(emotion))!;
+};
+
 export {
   floorRect,
   isTensor,
@@ -108,5 +116,6 @@ export {
   rgbToGrayscale,
   Emotions,
   getMaxEmotion,
-  getEmojiForPrediction
+  getEmojiForPrediction,
+  getEmojiForFaceapiPrediction
 };

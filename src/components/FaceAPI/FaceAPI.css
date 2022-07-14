@@ -1,0 +1,19 @@
+.FaceAPI {
+  position: relative;
+  user-select: none;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.FaceAPI, canvas, video {
+  border: none;
+  border-radius: 0.5rem;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+}

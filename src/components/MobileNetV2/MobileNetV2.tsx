@@ -77,7 +77,7 @@ const MobileNetV2 = () => {
     }
     context.clearRect(0, 0, 640, 480);
     const { x, y, width, height } = boundingRect;
-    context.strokeStyle = "green";
+    context.strokeStyle = "aqua";
     context.strokeRect(x, y, width, height);
   };
 

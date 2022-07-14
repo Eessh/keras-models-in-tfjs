@@ -3,6 +3,7 @@ import { Github } from "../../assets/icons";
 import "./HeaderBar.css";
 
 const HeaderBar = () => {
+
   return (
     <div className="HeaderBar">
       <a target="_blank" rel="noopener noreferrer" href="https://www.imbesideyou.com/english"><img className="logo" src={Logo} /></a>
@@ -12,6 +13,7 @@ const HeaderBar = () => {
       </span>
     </div>
   );
+
 };
 
 export default HeaderBar;

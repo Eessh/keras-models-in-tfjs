@@ -1,5 +1,5 @@
 import { GlobalContextProvider } from "./GlobalContext";
-import MobileNetV2 from "./components/MobileNetV2";
+import EmotionDetector from "./components/EmotionDetector";
 import EmotionEmoji from "./components/EmotionEmoji";
 import './App.css';
 import HeaderBar from "./components/HeaderBar";
@@ -13,7 +13,7 @@ function App() {
           <HeaderBar />
           <div className="content">
             <div className="left">
-              <MobileNetV2 />
+              <EmotionDetector />
             </div>
             <div className="right">
               <EmotionEmoji />
