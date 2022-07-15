@@ -31,6 +31,16 @@ flowchart TD
   J --> K[EmotionEmoji: Takes the prediction in GlobalContext, renders corresponding emoji.]
 ```
 
+## Performance Comparison
+- Cold Start Time (loading models from server, less is better): FaceAPI.js < Keras Models
+    - Here Keras Models loads another model Blazeface from external servers, so it's taking time
+- Warm Start Time (loading models from browser cache): Almost both are same
+- Latency (less is better): FaceAPI.js < Keras Models
+- Responsiveness (more is better): FaceAPI.js > Keras Models
+- Flickering Emotions (less is better): FaceAPI.js < Keras Models
+
+FaceAPI.js is winning 😅
+
 ## To run on local server
 ```bash
 git clone https://github.com/Eessh/keras-models-in-tfjs.git
